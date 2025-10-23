@@ -40,6 +40,7 @@ def search():
     free_shipping = request.args.get('free_shipping') == 'true'
     discount_only = request.args.get('discount_only') == 'true'
     sort_by = request.args.get('sort_by', 'relevance')
+    page = int(request.args.get('page', 1))
     
     filters = {
         'marketplace': marketplace,
@@ -48,15 +49,18 @@ def search():
         'sort_by': sort_by
     }
     
-    results = mock_data.search_products(query, filters)
+    search_result = mock_data.search_products(query, filters, page=page, per_page=50)
     
     # Check which products are in watchlist
-    for product in results:
+    for product in search_result['products']:
         product['in_watchlist'] = database.is_in_watchlist(product['id'])
     
     return render_template('search_results.html', 
                          query=query, 
-                         results=results,
+                         results=search_result['products'],
+                         total=search_result['total'],
+                         page=search_result['page'],
+                         total_pages=search_result['total_pages'],
                          filters=filters)
 
 @app.route('/product/<product_id>')

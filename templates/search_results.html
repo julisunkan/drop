@@ -7,7 +7,7 @@
     <div class="row mb-4">
         <div class="col-md-8">
             <h2>Search Results for "{{ query }}"</h2>
-            <p class="text-muted">Found {{ results|length }} products</p>
+            <p class="text-muted">Found {{ total }} products (Page {{ page }} of {{ total_pages }})</p>
         </div>
         <div class="col-md-4 text-end">
             <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
@@ -17,6 +17,52 @@
     </div>
 
     {% if results %}
+    <!-- Pagination Top -->
+    {% if total_pages > 1 %}
+    <nav aria-label="Product navigation" class="mb-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                <a class="page-link" href="?q={{ query }}&page={{ page - 1 }}&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}" {% if page == 1 %}tabindex="-1"{% endif %}>
+                    <i class="bi bi-chevron-left"></i> Previous
+                </a>
+            </li>
+            
+            {% set start_page = [1, page - 2]|max %}
+            {% set end_page = [total_pages, page + 2]|min %}
+            
+            {% if start_page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ query }}&page=1&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}">1</a>
+            </li>
+            {% if start_page > 2 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+            {% endif %}
+            
+            {% for p in range(start_page, end_page + 1) %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="?q={{ query }}&page={{ p }}&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+            
+            {% if end_page < total_pages %}
+            {% if end_page < total_pages - 1 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ query }}&page={{ total_pages }}&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}">{{ total_pages }}</a>
+            </li>
+            {% endif %}
+            
+            <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+                <a class="page-link" href="?q={{ query }}&page={{ page + 1 }}&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}" {% if page == total_pages %}tabindex="-1"{% endif %}>
+                    Next <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+    
     <div class="row">
         {% for product in results %}
         <div class="col-md-6 col-lg-4 mb-4">
@@ -82,6 +128,52 @@
         </div>
         {% endfor %}
     </div>
+    
+    <!-- Pagination Bottom -->
+    {% if total_pages > 1 %}
+    <nav aria-label="Product navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                <a class="page-link" href="?q={{ query }}&page={{ page - 1 }}&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}" {% if page == 1 %}tabindex="-1"{% endif %}>
+                    <i class="bi bi-chevron-left"></i> Previous
+                </a>
+            </li>
+            
+            {% set start_page = [1, page - 2]|max %}
+            {% set end_page = [total_pages, page + 2]|min %}
+            
+            {% if start_page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ query }}&page=1&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}">1</a>
+            </li>
+            {% if start_page > 2 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+            {% endif %}
+            
+            {% for p in range(start_page, end_page + 1) %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="?q={{ query }}&page={{ p }}&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+            
+            {% if end_page < total_pages %}
+            {% if end_page < total_pages - 1 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ query }}&page={{ total_pages }}&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}">{{ total_pages }}</a>
+            </li>
+            {% endif %}
+            
+            <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+                <a class="page-link" href="?q={{ query }}&page={{ page + 1 }}&marketplace={{ filters.marketplace }}&free_shipping={{ filters.free_shipping }}&discount_only={{ filters.discount_only }}&sort_by={{ filters.sort_by }}" {% if page == total_pages %}tabindex="-1"{% endif %}>
+                    Next <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
     
     <div class="compare-bar" id="compareBar" style="display:none;">
         <div class="container">
