@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Products - PriceDrop Tracker{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4">Product Comparison</h2>
+    
+    {% if products %}
+    <div class="table-responsive">
+        <table class="table table-bordered comparison-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    {% for product in products %}
+                    <th class="text-center">
+                        <img src="{{ product.image }}" class="img-fluid mb-2" style="max-height: 150px;" alt="{{ product.name }}">
+                    </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Product Name</strong></td>
+                    {% for product in products %}
+                    <td>{{ product.name }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td><strong>Marketplace</strong></td>
+                    {% for product in products %}
+                    <td><span class="badge marketplace-{{ product.marketplace.lower() }}">{{ product.marketplace }}</span></td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td><strong>Price</strong></td>
+                    {% for product in products %}
+                    <td class="text-success fw-bold fs-5">${{ "%.2f"|format(product.price) }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td><strong>Discount</strong></td>
+                    {% for product in products %}
+                    <td>
+                        {% if product.discount > 0 %}
+                        <span class="badge bg-danger">{{ product.discount }}% OFF</span>
+                        {% else %}
+                        No discount
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td><strong>Rating</strong></td>
+                    {% for product in products %}
+                    <td><i class="bi bi-star-fill text-warning"></i> {{ product.rating }} / 5.0</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td><strong>Reviews</strong></td>
+                    {% for product in products %}
+                    <td>{{ product.reviews }} reviews</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td><strong>Delivery</strong></td>
+                    {% for product in products %}
+                    <td>{{ product.delivery_days }} days</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td><strong>Free Shipping</strong></td>
+                    {% for product in products %}
+                    <td>
+                        {% if product.free_shipping %}
+                        <i class="bi bi-check-circle-fill text-success"></i> Yes
+                        {% else %}
+                        <i class="bi bi-x-circle-fill text-danger"></i> No
+                        {% endif %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td><strong>Action</strong></td>
+                    {% for product in products %}
+                    <td>
+                        <a href="/product/{{ product.id }}" class="btn btn-sm btn-primary d-block mb-2">View Details</a>
+                        <a href="{{ product.url }}" class="btn btn-sm btn-warning d-block" target="_blank">Buy Now</a>
+                    </td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <h4>No products to compare</h4>
+        <p><a href="/">Search for products</a> and select items to compare.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

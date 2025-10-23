@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results - {{ query }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>Search Results for "{{ query }}"</h2>
+            <p class="text-muted">Found {{ results|length }} products</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                <i class="bi bi-funnel"></i> Filters & Sort
+            </button>
+        </div>
+    </div>
+
+    {% if results %}
+    <div class="row">
+        {% for product in results %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card product-card h-100 shadow-sm">
+                <a href="/product/{{ product.id }}" class="text-decoration-none">
+                    <img src="{{ product.image }}" class="card-img-top product-image" alt="{{ product.name }}">
+                </a>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <span class="badge marketplace-{{ product.marketplace.lower() }}">
+                            {{ product.marketplace }}
+                        </span>
+                        {% if product.free_shipping %}
+                        <span class="badge bg-success">Free Shipping</span>
+                        {% endif %}
+                        {% if product.discount > 0 %}
+                        <span class="badge bg-danger">{{ product.discount }}% OFF</span>
+                        {% endif %}
+                    </div>
+                    
+                    <h5 class="card-title">
+                        <a href="/product/{{ product.id }}" class="text-dark text-decoration-none">
+                            {{ product.name[:60] }}{% if product.name|length > 60 %}...{% endif %}
+                        </a>
+                    </h5>
+                    
+                    <div class="price-section mb-2">
+                        <span class="current-price fs-4 fw-bold text-success">
+                            ${{ "%.2f"|format(product.price) }}
+                        </span>
+                        {% if product.discount > 0 %}
+                        <span class="original-price text-muted text-decoration-line-through ms-2">
+                            ${{ "%.2f"|format(product.original_price) }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="product-meta small text-muted mb-3">
+                        <span><i class="bi bi-star-fill text-warning"></i> {{ product.rating }}</span>
+                        <span class="ms-2">({{ product.reviews }} reviews)</span>
+                        <span class="ms-2"><i class="bi bi-truck"></i> {{ product.delivery_days }} days</span>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-sm btn-outline-primary watchlist-btn" 
+                                data-product-id="{{ product.id }}"
+                                data-product-name="{{ product.name }}"
+                                data-marketplace="{{ product.marketplace }}"
+                                data-price="{{ product.price }}"
+                                data-original-price="{{ product.original_price }}"
+                                data-image="{{ product.image }}"
+                                data-in-watchlist="{{ product.in_watchlist }}">
+                            <i class="bi bi-bookmark{% if product.in_watchlist %}-fill{% endif %}"></i>
+                            {% if product.in_watchlist %}In Watchlist{% else %}Track Price{% endif %}
+                        </button>
+                        <input type="checkbox" class="compare-checkbox" value="{{ product.id }}" style="display:none;">
+                        <label class="btn btn-sm btn-outline-secondary compare-label" for="compare-{{ product.id }}">
+                            <i class="bi bi-arrow-left-right"></i> Compare
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="compare-bar" id="compareBar" style="display:none;">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <span id="compareCount">0 products selected</span>
+                <button class="btn btn-warning" id="compareBtn">Compare Selected</button>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <div class="alert alert-info">
+        <h4>No results found</h4>
+        <p>Try different keywords or check out our <a href="/community">community deals</a>.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filters & Sort</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="filterForm" action="/search" method="GET">
+                    <input type="hidden" name="q" value="{{ query }}">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Marketplace</label>
+                        <select class="form-select" name="marketplace">
+                            <option value="all" {% if filters.marketplace == 'all' %}selected{% endif %}>All Marketplaces</option>
+                            <option value="Amazon" {% if filters.marketplace == 'Amazon' %}selected{% endif %}>Amazon</option>
+                            <option value="eBay" {% if filters.marketplace == 'eBay' %}selected{% endif %}>eBay</option>
+                            <option value="AliExpress" {% if filters.marketplace == 'AliExpress' %}selected{% endif %}>AliExpress</option>
+                            <option value="Jumia" {% if filters.marketplace == 'Jumia' %}selected{% endif %}>Jumia</option>
+                            <option value="Temu" {% if filters.marketplace == 'Temu' %}selected{% endif %}>Temu</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" name="free_shipping" value="true" 
+                               id="freeShipping" {% if filters.free_shipping %}checked{% endif %}>
+                        <label class="form-check-label" for="freeShipping">Free Shipping Only</label>
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" name="discount_only" value="true" 
+                               id="discountOnly" {% if filters.discount_only %}checked{% endif %}>
+                        <label class="form-check-label" for="discountOnly">Discounted Items Only</label>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Sort By</label>
+                        <select class="form-select" name="sort_by">
+                            <option value="relevance" {% if filters.sort_by == 'relevance' %}selected{% endif %}>Relevance</option>
+                            <option value="price_low" {% if filters.sort_by == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                            <option value="price_high" {% if filters.sort_by == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                            <option value="discount" {% if filters.sort_by == 'discount' %}selected{% endif %}>Highest Discount</option>
+                            <option value="delivery" {% if filters.sort_by == 'delivery' %}selected{% endif %}>Fastest Delivery</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}
