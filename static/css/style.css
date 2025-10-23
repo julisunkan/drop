@@ -513,6 +513,24 @@ body {
     background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%) !important;
 }
 
+/* Dark mode hero section */
+[data-bs-theme="dark"] .bg-gradient,
+[data-bs-theme="dark"] .hero-section {
+    background: linear-gradient(-45deg, #1a1f3a, #2d1f3a, #3a1f2d, #1f2a3a) !important;
+    background-size: 400% 400%;
+}
+
+/* Dark mode navbar */
+[data-bs-theme="dark"] .navbar {
+    background: linear-gradient(135deg, #1a1f3a 0%, #0d0f1a 100%) !important;
+    box-shadow: 0 4px 20px rgba(30, 40, 80, 0.6);
+}
+
+[data-bs-theme="dark"] .navbar-dark {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%) !important;
+}
+
+/* Dark mode cards */
 [data-bs-theme="dark"] .card, [data-bs-theme="dark"] .product-card, 
 [data-bs-theme="dark"] .deal-card, [data-bs-theme="dark"] .feature-card {
     background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
@@ -520,12 +538,58 @@ body {
     border-color: #404040;
 }
 
+/* Dark mode category badges */
+[data-bs-theme="dark"] .category-badge {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+    color: #e0e0e0 !important;
+    border-color: rgba(102, 126, 234, 0.5);
+}
+
+[data-bs-theme="dark"] .category-badge:hover {
+    background: linear-gradient(135deg, #3a3a5a 0%, #4a4a6a 100%);
+}
+
+/* Dark mode text */
 [data-bs-theme="dark"] .text-dark {
     color: #e0e0e0 !important;
 }
 
-[data-bs-theme="dark"] .navbar-dark {
-    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%) !important;
+/* Dark mode badges and marketplace colors - keep them vibrant */
+[data-bs-theme="dark"] .marketplace-amazon,
+[data-bs-theme="dark"] .marketplace-ebay,
+[data-bs-theme="dark"] .marketplace-aliexpress,
+[data-bs-theme="dark"] .marketplace-jumia,
+[data-bs-theme="dark"] .marketplace-temu {
+    opacity: 0.95;
+}
+
+/* Dark mode discount badges - keep them vibrant */
+[data-bs-theme="dark"] .discount-badge {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+/* Dark mode price display */
+[data-bs-theme="dark"] .price-display {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+    border-left-color: #38b764;
+}
+
+/* Dark mode comparison table */
+[data-bs-theme="dark"] .comparison-table {
+    background: #2d2d2d;
+}
+
+[data-bs-theme="dark"] .comparison-table th {
+    background: linear-gradient(135deg, #3a3a5a 0%, #4a4a6a 100%);
+}
+
+[data-bs-theme="dark"] .comparison-table td,
+[data-bs-theme="dark"] .comparison-table th {
+    border-color: #404040;
+}
+
+[data-bs-theme="dark"] .comparison-table tr:hover {
+    background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%);
 }
 
 /* Theme Toggle Button */
