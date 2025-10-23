@@ -25,6 +25,12 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     overflow-x: hidden;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe0e9 50%, #f3e5f5 100%);
+    min-height: 100vh;
+}
+
+[data-bs-theme="dark"] body {
+    background: linear-gradient(135deg, #1a1a2c 0%, #2d1a3a 50%, #1f2a1a 100%);
 }
 
 /* Animated Background Gradient */
@@ -193,9 +199,9 @@ body {
 /* Feature Cards */
 .feature-card {
     border-radius: 20px;
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    background: linear-gradient(135deg, #ffe0e9 0%, #f3e5f5 100%);
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    border: 2px solid #e0e0e0;
+    border: 2px solid rgba(233, 30, 99, 0.2);
     position: relative;
     overflow: hidden;
     animation: fadeInUp 1s ease;
@@ -279,7 +285,8 @@ body {
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     animation: fadeInUp 0.6s ease;
     animation-fill-mode: both;
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe0e9 100%);
+    border: 2px solid rgba(233, 30, 99, 0.1);
 }
 
 .product-card:hover {
@@ -419,10 +426,15 @@ body {
     transition: all 0.4s ease;
     border-radius: 20px;
     overflow: hidden;
-    border: none;
+    border: 2px solid rgba(233, 30, 99, 0.1);
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     animation: fadeInUp 0.6s ease;
     animation-fill-mode: both;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe0e9 100%);
+}
+
+[data-bs-theme="dark"] .deal-card {
+    background: linear-gradient(135deg, #2d1a3a 0%, #1a2332 100%);
 }
 
 .deal-card:hover {
@@ -508,6 +520,21 @@ body {
 
 .comparison-table tr:hover {
     background: linear-gradient(135deg, #fff0f5 0%, #f3e5f5 100%);
+}
+
+/* Footer */
+footer.bg-light {
+    background: linear-gradient(135deg, #ff6b9d 0%, #ffd93d 50%, #ff9068 100%) !important;
+    color: white !important;
+    margin-top: 50px !important;
+}
+
+footer.bg-light p {
+    color: white !important;
+}
+
+[data-bs-theme="dark"] footer.bg-light {
+    background: linear-gradient(135deg, #4a1a2c 0%, #2d1a3a 50%, #3a2419 100%) !important;
 }
 
 /* Dark Mode */
@@ -618,9 +645,25 @@ body {
     to { transform: rotate(360deg); }
 }
 
+/* Container backgrounds */
+.container {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(233, 30, 99, 0.1);
+}
+
+[data-bs-theme="dark"] .container {
+    background: rgba(45, 45, 45, 0.7);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
 /* Watchlist Preview */
 .watchlist-preview {
-    background: linear-gradient(135deg, #fff0f5 0%, #f3e5f5 100%);
+    background: linear-gradient(135deg, #ffe0e9 0%, #f3e5f5 100%);
     padding: 40px;
     border-radius: 20px;
     margin-top: 40px;
@@ -629,7 +672,7 @@ body {
 }
 
 [data-bs-theme="dark"] .watchlist-preview {
-    background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
+    background: linear-gradient(135deg, #2d1a3a 0%, #1a2332 100%);
 }
 
 /* AI Insights */
