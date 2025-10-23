@@ -292,11 +292,17 @@ def community():
     with open('community-deals.json', 'r') as f:
         deals = json.load(f)
     
-    # Add local upvote counts
+    # Add local upvote counts and validate images
     for deal in deals:
         local_upvotes = database.get_deal_upvotes(deal['id'])
         deal['total_upvotes'] = deal['upvotes'] + local_upvotes
         deal['user_upvoted'] = local_upvotes > 0
+        
+        # Validate and get working image URL
+        deal['image'] = mock_data.get_validated_image(
+            deal.get('image', ''),
+            deal['title']
+        )
     
     # Sort by total upvotes
     deals.sort(key=lambda x: x['total_upvotes'], reverse=True)

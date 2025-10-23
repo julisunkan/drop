@@ -1,6 +1,8 @@
 import random
 from datetime import datetime, timedelta
 import hashlib
+import requests
+from functools import lru_cache
 
 def generate_product_image(product_name):
     """Generate a placeholder image URL based on product name"""
@@ -17,6 +19,29 @@ def generate_product_image(product_name):
     # Using a placeholder service that generates images dynamically
     encoded_name = product_name[:30].replace(' ', '+')
     return f"https://via.placeholder.com/400x400/{hash_hex[0:6]}/ffffff?text={encoded_name}"
+
+@lru_cache(maxsize=500)
+def validate_image_url(url, timeout=3):
+    """Validate if an image URL is accessible. Cached to avoid repeated requests."""
+    if not url or url == '':
+        return False
+    
+    try:
+        response = requests.head(url, timeout=timeout, allow_redirects=True)
+        # Check if status is OK and content-type is an image
+        if response.status_code == 200:
+            content_type = response.headers.get('content-type', '').lower()
+            return 'image' in content_type or response.status_code == 200
+        return False
+    except (requests.RequestException, Exception):
+        return False
+
+def get_validated_image(image_url, fallback_name):
+    """Get validated image URL or generate fallback"""
+    if validate_image_url(image_url):
+        return image_url
+    else:
+        return generate_product_image(fallback_name)
 
 # Mock marketplace data
 MOCK_PRODUCTS = [
@@ -900,9 +925,11 @@ def search_products(query, filters=None, page=1, per_page=50):
     for product in MOCK_PRODUCTS:
         if query_lower in product['name'].lower() or query_lower in product['description'].lower():
             product_copy = product.copy()
-            # Generate fallback image if not available
-            if not product_copy.get('image') or product_copy['image'] == '':
-                product_copy['image'] = generate_product_image(product_copy['name'])
+            # Validate and get working image URL
+            product_copy['image'] = get_validated_image(
+                product_copy.get('image', ''),
+                product_copy['name']
+            )
             results.append(product_copy)
 
     # Apply filters
@@ -951,9 +978,11 @@ def get_product_by_id(product_id):
     for product in MOCK_PRODUCTS:
         if product['id'] == product_id:
             product_copy = product.copy()
-            # Generate fallback image if not available
-            if not product_copy.get('image') or product_copy['image'] == '':
-                product_copy['image'] = generate_product_image(product_copy['name'])
+            # Validate and get working image URL
+            product_copy['image'] = get_validated_image(
+                product_copy.get('image', ''),
+                product_copy['name']
+            )
             return product_copy
     return None
 
