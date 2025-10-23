@@ -10,14 +10,10 @@ def generate_product_image(product_name):
     hash_obj = hashlib.md5(product_name.encode())
     hash_hex = hash_obj.hexdigest()
     
-    # Extract RGB values from hash
-    r = int(hash_hex[0:2], 16)
-    g = int(hash_hex[2:4], 16)
-    b = int(hash_hex[4:6], 16)
-    
-    # Create a placeholder image with the product name
-    # Using a placeholder service that generates images dynamically
+    # Create a demo placeholder image with the product name
+    # Using placeholder.com which is reliable for demo images
     encoded_name = product_name[:30].replace(' ', '+')
+    # Return a reliable placeholder service URL
     return f"https://via.placeholder.com/400x400/{hash_hex[0:6]}/ffffff?text={encoded_name}"
 
 @lru_cache(maxsize=500)
@@ -38,9 +34,11 @@ def validate_image_url(url, timeout=3):
 
 def get_validated_image(image_url, fallback_name):
     """Get validated image URL or generate fallback"""
-    if validate_image_url(image_url):
+    # Always return a valid image - either the original if it works, or a demo image
+    if image_url and validate_image_url(image_url):
         return image_url
     else:
+        # Use placeholder.com for demo images when validation fails or URL is empty
         return generate_product_image(fallback_name)
 
 # Mock marketplace data
