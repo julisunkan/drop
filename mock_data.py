@@ -1,4 +1,3 @@
-
 import random
 from datetime import datetime, timedelta
 
@@ -8,16 +7,76 @@ MOCK_PRODUCTS = [
         "id": "amz_001",
         "name": "Sony WH-1000XM5 Wireless Noise Cancelling Headphones",
         "marketplace": "Amazon",
-        "price": 349.99,
+        "price": 348.00,
         "original_price": 399.99,
         "discount": 13,
-        "image": "https://m.media-amazon.com/images/I/61vFO3XUFtL._AC_SL1500_.jpg",
-        "url": "https://www.amazon.com/s?k=Sony+WH-1000XM5+Wireless+Noise+Cancelling+Headphones",
+        "image": "https://m.media-amazon.com/images/I/61vFO3CCBCL._AC_SL1500_.jpg",
+        "url": "https://www.amazon.com/Sony-WH-1000XM5-Canceling-Headphones-Hands-Free/dp/B09XS7JWHH",
+        "free_shipping": True,
+        "rating": 4.7,
+        "reviews": 12453,
+        "delivery_days": 2,
+        "description": "Industry-leading noise cancellation with premium sound quality and 30-hour battery life."
+    },
+    {
+        "id": "amz_ps5",
+        "name": "PlayStation 5 Console (PS5) - Digital Edition",
+        "marketplace": "Amazon",
+        "price": 449.99,
+        "original_price": 499.99,
+        "discount": 10,
+        "image": "https://m.media-amazon.com/images/I/51JqjP3KzWL._SL1024_.jpg",
+        "url": "https://www.amazon.com/PlayStation-5-Console/dp/B0BCNKKZ91",
         "free_shipping": True,
         "rating": 4.8,
-        "reviews": 12543,
+        "reviews": 28432,
         "delivery_days": 2,
-        "description": "Industry-leading noise cancellation with premium sound quality. 30-hour battery life, multipoint connection, and speak-to-chat technology."
+        "description": "Experience lightning-fast loading with ultra-high speed SSD, stunning graphics with 4K gaming, and immersive haptic feedback."
+    },
+    {
+        "id": "ebay_ps5",
+        "name": "Sony PlayStation 5 PS5 Disc Version Gaming Console",
+        "marketplace": "eBay",
+        "price": 479.99,
+        "original_price": 549.99,
+        "discount": 13,
+        "image": "https://m.media-amazon.com/images/I/51JqjP3KzWL._SL1024_.jpg",
+        "url": "https://www.ebay.com/sch/i.html?_nkw=playstation+5+console",
+        "free_shipping": False,
+        "rating": 4.7,
+        "reviews": 5421,
+        "delivery_days": 4,
+        "description": "PS5 with disc drive - play both physical and digital games. Includes DualSense wireless controller."
+    },
+    {
+        "id": "amz_desktop",
+        "name": "HP Desktop Computer, Intel Core i7, 16GB RAM, 512GB SSD",
+        "marketplace": "Amazon",
+        "price": 649.99,
+        "original_price": 899.99,
+        "discount": 28,
+        "image": "https://m.media-amazon.com/images/I/71h-vHSRmJL._AC_SL1500_.jpg",
+        "url": "https://www.amazon.com/HP-Desktop-Computer-i7-Windows/dp/B0C1JK7PQP",
+        "free_shipping": True,
+        "rating": 4.5,
+        "reviews": 3245,
+        "delivery_days": 3,
+        "description": "Powerful desktop computer with Intel Core i7 processor, 16GB RAM, 512GB SSD storage. Perfect for work and entertainment."
+    },
+    {
+        "id": "ali_computer",
+        "name": "Gaming Desktop PC Computer Intel i5, 32GB RAM, RTX 3060",
+        "marketplace": "AliExpress",
+        "price": 799.99,
+        "original_price": 1299.99,
+        "discount": 38,
+        "image": "https://m.media-amazon.com/images/I/71R7qZ3EJPL._AC_SL1500_.jpg",
+        "url": "https://www.aliexpress.com/w/wholesale-gaming-desktop-computer.html",
+        "free_shipping": True,
+        "rating": 4.6,
+        "reviews": 1876,
+        "delivery_days": 15,
+        "description": "High-performance gaming computer with RGB lighting, Intel i5 processor, 32GB RAM, and NVIDIA RTX 3060 graphics card."
     },
     {
         "id": "ali_001",
@@ -190,24 +249,24 @@ def search_products(query, filters=None):
     """Search products based on query and filters"""
     query_lower = query.lower()
     results = []
-    
+
     for product in MOCK_PRODUCTS:
         if query_lower in product['name'].lower() or query_lower in product['description'].lower():
             results.append(product.copy())
-    
+
     # Apply filters
     if filters:
         if filters.get('free_shipping'):
             results = [p for p in results if p['free_shipping']]
-        
+
         if filters.get('discount_only'):
             results = [p for p in results if p['discount'] > 0]
-        
+
         if filters.get('marketplace'):
             marketplace = filters['marketplace']
             if marketplace != 'all':
                 results = [p for p in results if p['marketplace'] == marketplace]
-    
+
     # Sort results
     sort_by = filters.get('sort_by', 'relevance') if filters else 'relevance'
     if sort_by == 'price_low':
@@ -218,7 +277,7 @@ def search_products(query, filters=None):
         results.sort(key=lambda x: x['discount'], reverse=True)
     elif sort_by == 'delivery':
         results.sort(key=lambda x: x['delivery_days'])
-    
+
     return results
 
 def get_product_by_id(product_id):
@@ -232,26 +291,26 @@ def generate_price_history(current_price, days=30):
     """Generate realistic price history for visualization"""
     history = []
     base_price = current_price * 1.1  # Start slightly higher
-    
+
     for i in range(days):
         date = datetime.now() - timedelta(days=days-i)
         # Add some random variation
         variation = random.uniform(-0.05, 0.05)
         price = base_price * (1 + variation)
-        
+
         # Occasional drops
         if random.random() < 0.15:
             price = price * random.uniform(0.85, 0.95)
-        
+
         # Trend towards current price
         price = price * (1 - (i / days) * 0.1)
-        
+
         history.append({
             'date': date.strftime('%Y-%m-%d'),
             'price': round(price, 2)
         })
-    
+
     # Ensure last price is current price
     history[-1]['price'] = current_price
-    
+
     return history
