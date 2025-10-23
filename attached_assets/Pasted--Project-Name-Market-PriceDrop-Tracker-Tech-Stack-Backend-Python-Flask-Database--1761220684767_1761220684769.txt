@@ -1,0 +1,154 @@
+🏷️ Project Name: Market PriceDrop Tracker
+
+🔧 Tech Stack:
+
+Backend: Python (Flask)
+
+Database: SQLite
+
+Frontend: HTML, CSS, JS (Bootstrap 5 or Tailwind)
+
+Graphs: Chart.js or Matplotlib
+
+PDF Export: reportlab
+
+AI Product Summary: HuggingFace free API (e.g., facebook/bart-large-cnn)
+
+Offline Support: PWA (manifest.json + service-worker.js)
+
+📱 Goal:
+Build a universal deal-finder and price tracker web app that helps users compare prices across major marketplaces (Amazon, AliExpress, eBay, Jumia, Temu, etc.) without login or registration.
+
+✅ Key Features:
+
+Global Search:
+
+Users can type a product name once to search all supported marketplaces.
+
+Use free/public APIs or scraping proxies (only free ones).
+
+Filter results by “Free Shipping”, “Discount only”, “Lowest Price”, “Fastest Delivery”, etc
+
+Show thumbnails, titles, current price, discount %, and marketplace badge.
+
+Price Tracking (SQLite):
+
+Store product history locally (no account).
+
+Show 📈 price trend graph (Chart.js or Matplotlib).
+
+Highlight drops in green, increases in red.
+
+Auto-update cached prices daily.
+
+Allow “Track this item” toggle — stored in local SQLite DB.
+
+AI Features (HuggingFace, Free):
+
+AI product summary → summarize product title + description.
+
+“Should I Buy Now?” predictor → outputs short advice based on recent price trends.
+
+Fake review detector → uses sentiment model to flag suspicious listings.
+
+PDF & Export:
+
+Export current price comparison or watchlist to PDF via reportlab.
+
+Option to export as CSV.
+
+Include graph and summary in the PDF.
+
+Community Deals (Static JSON):
+
+Load community-deals.json file with curated offers.
+
+Users can upvote locally (SQLite), but not post.
+
+Show “Top Deals Today” on homepage.
+
+PWA Features:
+
+Add manifest.json and service-worker.js for offline access.
+
+Cache HTML, CSS, and last 10 searches for offline browsing.
+
+Installable on desktop and mobile.
+
+UI & UX:
+
+Mobile-friendly layout (Bootstrap 5).
+
+Light/Dark mode toggle.
+
+Search suggestions (cached locally).
+
+Category quick filters (Electronics, Fashion, Home, etc.).
+
+Side-by-side product comparison screen.
+
+Color themes per marketplace (Amazon orange, AliExpress red, etc.).
+
+Extra Smart Features:
+
+Voice search (optional JS).
+
+Currency conversion via free exchangerate.host API.
+
+Regional price detection via free ipapi.co/json.
+
+Alert system (local notifications only) for price drops or new community deals.
+
+⚙️ App Structure:
+
+/static/
+    css/
+    js/
+    icons/
+/templates/
+    index.html
+    search_results.html
+    product_detail.html
+    community.html
+app.py
+database.db (SQLite)
+manifest.json
+service-worker.js
+community-deals.json
+requirements.txt
+
+
+🧩 Requirements.txt Example:
+
+flask
+requests
+reportlab
+beautifulsoup4
+matplotlib
+huggingface-hub
+pandas
+
+
+⚡ Additional Notes:
+
+No login or authentication system.
+
+Store all preferences in local SQLite and browser localStorage.
+
+Use free or public data endpoints (no paid APIs).
+
+Ensure PWA installation works (manifest + service worker registration).
+
+Show a sample dataset in community-deals.json for testing.
+
+🎯 Deliverables:
+
+Fully functional Flask web app runnable on Replit.
+
+Responsive UI and offline-ready PWA.
+
+Example graph and working PDF export.
+
+AI summaries integrated via HuggingFace free inference endpoint.
+
+Example search pulling mock/free marketplace data (if real API not available).
