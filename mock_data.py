@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 import hashlib
 import requests
 from functools import lru_cache
+from bs4 import BeautifulSoup
+import re
 
 def generate_product_image(product_name):
     """Generate a placeholder image URL based on product name"""
@@ -15,6 +17,92 @@ def generate_product_image(product_name):
     encoded_name = product_name[:30].replace(' ', '%20')
     # Return a reliable placeholder service URL with background and text color
     return f"https://placehold.co/400x400/{hash_hex[0:6]}/ffffff?text={encoded_name}"
+
+def scrape_product_image(product_url, product_name):
+    """Scrape product image from the actual product URL"""
+    if not product_url or product_url == '':
+        return generate_product_image(product_name)
+    
+    try:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        
+        response = requests.get(product_url, headers=headers, timeout=5, allow_redirects=True)
+        
+        if response.status_code != 200:
+            return generate_product_image(product_name)
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Try multiple common selectors for product images
+        image_url = None
+        
+        # Amazon specific
+        if 'amazon.com' in product_url:
+            img_tag = soup.find('img', {'id': 'landingImage'}) or \
+                     soup.find('img', {'class': 'a-dynamic-image'}) or \
+                     soup.find('img', {'data-old-hires': True})
+            if img_tag:
+                image_url = img_tag.get('src') or img_tag.get('data-old-hires') or img_tag.get('data-a-dynamic-image')
+                if image_url and image_url.startswith('data:'):
+                    # Extract from data-a-dynamic-image JSON
+                    dynamic_img = img_tag.get('data-a-dynamic-image')
+                    if dynamic_img:
+                        urls = re.findall(r'"(https?://[^"]+)"', dynamic_img)
+                        if urls:
+                            image_url = urls[0]
+        
+        # eBay specific
+        elif 'ebay.com' in product_url:
+            img_tag = soup.find('img', {'id': 'icImg'}) or \
+                     soup.find('img', {'class': 'vi-image-gallery__image'})
+            if img_tag:
+                image_url = img_tag.get('src')
+        
+        # AliExpress specific
+        elif 'aliexpress.com' in product_url:
+            img_tag = soup.find('img', {'class': 'magnifier-image'}) or \
+                     soup.find('meta', {'property': 'og:image'})
+            if img_tag:
+                image_url = img_tag.get('src') if img_tag.name == 'img' else img_tag.get('content')
+        
+        # Generic Open Graph image
+        if not image_url:
+            meta_tag = soup.find('meta', {'property': 'og:image'}) or \
+                      soup.find('meta', {'name': 'twitter:image'})
+            if meta_tag:
+                image_url = meta_tag.get('content')
+        
+        # Generic image with product in alt text
+        if not image_url:
+            img_tags = soup.find_all('img', limit=20)
+            for img in img_tags:
+                alt = (img.get('alt') or '').lower()
+                src = img.get('src') or img.get('data-src')
+                if src and ('product' in alt or 'item' in alt or len(alt) > 10):
+                    if not src.startswith('data:') and ('http' in src or src.startswith('//')):
+                        image_url = src
+                        break
+        
+        # Clean up image URL
+        if image_url:
+            if image_url.startswith('//'):
+                image_url = 'https:' + image_url
+            elif not image_url.startswith('http'):
+                from urllib.parse import urljoin
+                image_url = urljoin(product_url, image_url)
+            
+            # Validate the scraped image
+            if validate_image_url(image_url):
+                return image_url
+        
+        # Fallback to placeholder
+        return generate_product_image(product_name)
+        
+    except Exception as e:
+        # Fallback to placeholder on any error
+        return generate_product_image(product_name)
 
 @lru_cache(maxsize=500)
 def validate_image_url(url, timeout=3):
@@ -32,14 +120,20 @@ def validate_image_url(url, timeout=3):
     except (requests.RequestException, Exception):
         return False
 
-def get_validated_image(image_url, fallback_name):
-    """Get validated image URL or generate fallback"""
-    # Always return a valid image - either the original if it works, or a demo image
+def get_validated_image(image_url, fallback_name, product_url=None):
+    """Get validated image URL, try scraping if needed, or generate fallback"""
+    # First, try the provided image URL
     if image_url and validate_image_url(image_url):
         return image_url
-    else:
-        # Use placehold.co for demo images when validation fails or URL is empty
-        return generate_product_image(fallback_name)
+    
+    # If image validation fails and we have a product URL, try scraping
+    if product_url:
+        scraped_image = scrape_product_image(product_url, fallback_name)
+        if scraped_image and validate_image_url(scraped_image):
+            return scraped_image
+    
+    # Final fallback: use placehold.co for demo images
+    return generate_product_image(fallback_name)
 
 # Mock marketplace data
 MOCK_PRODUCTS = [
@@ -923,10 +1017,11 @@ def search_products(query, filters=None, page=1, per_page=50):
     for product in MOCK_PRODUCTS:
         if query_lower in product['name'].lower() or query_lower in product['description'].lower():
             product_copy = product.copy()
-            # Validate and get working image URL
+            # Validate and get working image URL, try scraping if needed
             product_copy['image'] = get_validated_image(
                 product_copy.get('image', ''),
-                product_copy['name']
+                product_copy['name'],
+                product_copy.get('url')
             )
             results.append(product_copy)
 
@@ -976,10 +1071,11 @@ def get_product_by_id(product_id):
     for product in MOCK_PRODUCTS:
         if product['id'] == product_id:
             product_copy = product.copy()
-            # Validate and get working image URL
+            # Validate and get working image URL, try scraping if needed
             product_copy['image'] = get_validated_image(
                 product_copy.get('image', ''),
-                product_copy['name']
+                product_copy['name'],
+                product_copy.get('url')
             )
             return product_copy
     return None

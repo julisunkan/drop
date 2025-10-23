@@ -298,10 +298,11 @@ def community():
         deal['total_upvotes'] = deal['upvotes'] + local_upvotes
         deal['user_upvoted'] = local_upvotes > 0
         
-        # Validate and get working image URL
+        # Validate and get working image URL, try scraping if needed
         deal['image'] = mock_data.get_validated_image(
             deal.get('image', ''),
-            deal['title']
+            deal['title'],
+            deal.get('url')
         )
     
     # Sort by total upvotes
