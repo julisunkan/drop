@@ -1,14 +1,21 @@
+
 :root {
     --amazon-color: #FF9900;
     --ebay-color: #0064D2;
     --aliexpress-color: #E62E04;
     --jumia-color: #F68B1E;
     --temu-color: #FF6B35;
-    --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --gradient-1: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%); /* pink to purple */
+    --gradient-2: linear-gradient(135deg, #ff6b6b 0%, #ff9068 100%); /* red to orange */
+    --gradient-3: linear-gradient(135deg, #ffd93d 0%, #ff6b35 100%); /* lemon to orange */
+    --gradient-4: linear-gradient(135deg, #9c27b0 0%, #6a1b9a 100%); /* purple tones */
+    --gradient-5: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%); /* red to lemon */
+    --primary-red: #e91e63;
+    --primary-orange: #ff9068;
+    --primary-pink: #ff6b9d;
+    --primary-purple: #9c27b0;
+    --primary-lemon: #ffd93d;
+    --primary-brown: #8d6e63;
 }
 
 * {
@@ -22,7 +29,7 @@ body {
 
 /* Animated Background Gradient */
 .bg-gradient {
-    background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+    background: linear-gradient(-45deg, #e91e63, #9c27b0, #ff9068, #ffd93d, #8d6e63);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
 }
@@ -35,8 +42,8 @@ body {
 
 /* Navbar Enhancements */
 .navbar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%) !important;
+    box-shadow: 0 4px 20px rgba(233, 30, 99, 0.4);
     border-bottom: 3px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -120,9 +127,9 @@ body {
 }
 
 .search-form input:focus {
-    box-shadow: 0 8px 40px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 8px 40px rgba(233, 30, 99, 0.5);
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 107, 157, 0.6);
 }
 
 .search-form button {
@@ -130,9 +137,9 @@ body {
     padding: 18px 40px;
     font-weight: 700;
     font-size: 1.1rem;
-    background: linear-gradient(135deg, #FFC837 0%, #FF8008 100%);
+    background: linear-gradient(135deg, #ffd93d 0%, #ff9068 100%);
     border: none;
-    box-shadow: 0 8px 25px rgba(255, 200, 55, 0.4);
+    box-shadow: 0 8px 25px rgba(255, 217, 61, 0.4);
     animation: shimmer 3s infinite;
 }
 
@@ -143,7 +150,7 @@ body {
 
 .search-form button:hover {
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 12px 35px rgba(255, 200, 55, 0.6);
+    box-shadow: 0 12px 35px rgba(255, 144, 104, 0.6);
 }
 
 /* Category Badges */
@@ -152,7 +159,7 @@ body {
     padding: 12px 24px;
     font-size: 1.1rem;
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border: 2px solid rgba(102, 126, 234, 0.3);
+    border: 2px solid rgba(233, 30, 99, 0.3);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     animation: fadeInUp 1s ease;
     animation-fill-mode: both;
@@ -177,8 +184,8 @@ body {
 
 .category-badge:hover {
     transform: translateY(-8px) scale(1.15);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
-    background: var(--gradient-1);
+    box-shadow: 0 15px 35px rgba(156, 39, 176, 0.4);
+    background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);
     color: white !important;
     border-color: transparent;
 }
@@ -217,13 +224,13 @@ body {
 
 .feature-card:hover {
     transform: translateY(-15px) scale(1.05);
-    box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
-    border-color: #667eea;
+    box-shadow: 0 20px 50px rgba(233, 30, 99, 0.3);
+    border-color: #e91e63;
 }
 
 .feature-icon {
     font-size: 3.5rem;
-    background: var(--gradient-1);
+    background: linear-gradient(135deg, #ff6b6b 0%, #9c27b0 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -238,29 +245,29 @@ body {
 
 /* Marketplace Badges */
 .marketplace-amazon { 
-    background: linear-gradient(135deg, #FF9900 0%, #FF6600 100%);
+    background: linear-gradient(135deg, #ff9068 0%, #ff6b35 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(255, 153, 0, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 144, 104, 0.4);
 }
 .marketplace-ebay { 
-    background: linear-gradient(135deg, #0064D2 0%, #0050AA 100%);
+    background: linear-gradient(135deg, #9c27b0 0%, #6a1b9a 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(0, 100, 210, 0.4);
+    box-shadow: 0 4px 15px rgba(156, 39, 176, 0.4);
 }
 .marketplace-aliexpress { 
-    background: linear-gradient(135deg, #E62E04 0%, #C41F00 100%);
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(230, 46, 4, 0.4);
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
 }
 .marketplace-jumia { 
-    background: linear-gradient(135deg, #F68B1E 0%, #D97000 100%);
+    background: linear-gradient(135deg, #ffd93d 0%, #ff9068 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(246, 139, 30, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 217, 61, 0.4);
 }
 .marketplace-temu { 
-    background: linear-gradient(135deg, #FF6B35 0%, #FF4500 100%);
+    background: linear-gradient(135deg, #8d6e63 0%, #6d4c41 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 4px 15px rgba(141, 110, 99, 0.4);
 }
 
 /* Product Cards */
@@ -277,7 +284,7 @@ body {
 
 .product-card:hover {
     transform: translateY(-15px) rotate(2deg);
-    box-shadow: 0 25px 50px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 25px 50px rgba(156, 39, 176, 0.3);
 }
 
 .product-image {
@@ -292,14 +299,14 @@ body {
 }
 
 .current-price {
-    color: #28a745;
-    text-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+    color: #ff6b35;
+    text-shadow: 0 2px 10px rgba(255, 107, 53, 0.3);
     animation: priceGlow 2s infinite;
 }
 
 @keyframes priceGlow {
-    0%, 100% { text-shadow: 0 2px 10px rgba(40, 167, 69, 0.3); }
-    50% { text-shadow: 0 0 20px rgba(40, 167, 69, 0.6); }
+    0%, 100% { text-shadow: 0 2px 10px rgba(255, 107, 53, 0.3); }
+    50% { text-shadow: 0 0 20px rgba(255, 107, 53, 0.6); }
 }
 
 .original-price {
@@ -341,23 +348,23 @@ body {
 }
 
 .btn-primary {
-    background: var(--gradient-1);
+    background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);
     border: none;
 }
 
 .btn-warning {
-    background: linear-gradient(135deg, #FFC837 0%, #FF8008 100%);
+    background: linear-gradient(135deg, #ffd93d 0%, #ff9068 100%);
     border: none;
     color: white;
 }
 
 .btn-success {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    background: linear-gradient(135deg, #ff9068 0%, #ff6b35 100%);
     border: none;
 }
 
 .btn-danger {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    background: linear-gradient(135deg, #e91e63 0%, #ffd93d 100%);
     border: none;
     color: white;
 }
@@ -368,7 +375,7 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    background: linear-gradient(135deg, #8d6e63 0%, #6d4c41 100%);
     color: white;
     padding: 20px;
     z-index: 1000;
@@ -392,13 +399,13 @@ body {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
     color: white;
     padding: 8px 20px;
     border-radius: 30px;
     font-weight: bold;
     font-size: 1rem;
-    box-shadow: 0 5px 20px rgba(220, 53, 69, 0.5);
+    box-shadow: 0 5px 20px rgba(233, 30, 99, 0.5);
     animation: pulse 2s infinite;
 }
 
@@ -420,7 +427,7 @@ body {
 
 .deal-card:hover {
     transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 20px 40px rgba(156, 39, 176, 0.3);
 }
 
 /* Upvote Button */
@@ -428,19 +435,19 @@ body {
     font-weight: 700;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border: 2px solid #dc3545;
-    color: #dc3545;
+    border: 2px solid #e91e63;
+    color: #e91e63;
 }
 
 .upvote-btn:hover {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
     color: white;
     transform: translateY(-3px) scale(1.1);
-    box-shadow: 0 10px 25px rgba(220, 53, 69, 0.4);
+    box-shadow: 0 10px 25px rgba(233, 30, 99, 0.4);
 }
 
 .upvote-btn.active {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
     color: white;
     animation: heartbeat 1s infinite;
 }
@@ -456,7 +463,7 @@ body {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     padding: 25px;
     border-radius: 15px;
-    border-left: 5px solid #28a745;
+    border-left: 5px solid #ff6b35;
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     animation: fadeInRight 0.8s ease;
 }
@@ -487,7 +494,7 @@ body {
 }
 
 .comparison-table th {
-    background: var(--gradient-1);
+    background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);
     color: white;
     padding: 20px;
     font-size: 1.1rem;
@@ -500,7 +507,7 @@ body {
 }
 
 .comparison-table tr:hover {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: linear-gradient(135deg, #fff0f5 0%, #f3e5f5 100%);
 }
 
 /* Dark Mode */
@@ -516,14 +523,14 @@ body {
 /* Dark mode hero section */
 [data-bs-theme="dark"] .bg-gradient,
 [data-bs-theme="dark"] .hero-section {
-    background: linear-gradient(-45deg, #1a1f3a, #2d1f3a, #3a1f2d, #1f2a3a) !important;
+    background: linear-gradient(-45deg, #4a1a2c, #2d1a3a, #3a2419, #1f2a1a) !important;
     background-size: 400% 400%;
 }
 
 /* Dark mode navbar */
 [data-bs-theme="dark"] .navbar {
-    background: linear-gradient(135deg, #1a1f3a 0%, #0d0f1a 100%) !important;
-    box-shadow: 0 4px 20px rgba(30, 40, 80, 0.6);
+    background: linear-gradient(135deg, #4a1a2c 0%, #2d1a3a 100%) !important;
+    box-shadow: 0 4px 20px rgba(74, 26, 44, 0.6);
 }
 
 [data-bs-theme="dark"] .navbar-dark {
@@ -542,11 +549,11 @@ body {
 [data-bs-theme="dark"] .category-badge {
     background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
     color: #e0e0e0 !important;
-    border-color: rgba(102, 126, 234, 0.5);
+    border-color: rgba(233, 30, 99, 0.5);
 }
 
 [data-bs-theme="dark"] .category-badge:hover {
-    background: linear-gradient(135deg, #3a3a5a 0%, #4a4a6a 100%);
+    background: linear-gradient(135deg, #4a1a2c 0%, #2d1a3a 100%);
 }
 
 /* Dark mode text */
@@ -565,13 +572,13 @@ body {
 
 /* Dark mode discount badges - keep them vibrant */
 [data-bs-theme="dark"] .discount-badge {
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
 }
 
 /* Dark mode price display */
 [data-bs-theme="dark"] .price-display {
     background: linear-gradient(135deg, #2d2d2d 0%, #1f1f1f 100%);
-    border-left-color: #38b764;
+    border-left-color: #ff6b35;
 }
 
 /* Dark mode comparison table */
@@ -580,7 +587,7 @@ body {
 }
 
 [data-bs-theme="dark"] .comparison-table th {
-    background: linear-gradient(135deg, #3a3a5a 0%, #4a4a6a 100%);
+    background: linear-gradient(135deg, #4a1a2c 0%, #2d1a3a 100%);
 }
 
 [data-bs-theme="dark"] .comparison-table td,
@@ -613,7 +620,7 @@ body {
 
 /* Watchlist Preview */
 .watchlist-preview {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: linear-gradient(135deg, #fff0f5 0%, #f3e5f5 100%);
     padding: 40px;
     border-radius: 20px;
     margin-top: 40px;
@@ -627,12 +634,12 @@ body {
 
 /* AI Insights */
 .ai-insights {
-    background: linear-gradient(135deg, #e7f3ff 0%, #d4e9ff 100%);
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe0e9 100%);
     padding: 20px;
     border-radius: 15px;
     margin-top: 25px;
-    border: 2px solid rgba(102, 126, 234, 0.3);
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+    border: 2px solid rgba(233, 30, 99, 0.3);
+    box-shadow: 0 5px 20px rgba(233, 30, 99, 0.2);
     animation: fadeInUp 1s ease;
 }
 
